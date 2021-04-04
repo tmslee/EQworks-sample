@@ -7,14 +7,18 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Application.scss'
 import AppNavBar from "./AppNavbar/AppNavbar";
-import HomePage from "./HomePage/HomePage";
-import ChartVis from "./ChartVis/ChartVis";
-import DataTable from "./DataTable/DataTable";
-import GeoVis from "./GeoVis/GeoVis";
+import HomePage from "./HomePage/index";
+import ChartVis from "./ChartVis/index";
+import DataTable from "./DataTable/index";
+import GeoVis from "./GeoVis/index";
+import useAPIData from "../hooks/useAPIData";
 
 export default function Application() {
 
+  const {data, getAPIData} = useAPIData();
 
+  console.log(data);
+  
   return (
     <Router>
       <AppNavBar/>
@@ -28,6 +32,7 @@ export default function Application() {
         <Route
           path="/chart_vis" exact render={props => (
             <ChartVis {...props}
+            data={data}
             />
           )}
         />
