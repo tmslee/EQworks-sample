@@ -5,11 +5,11 @@ const useAPIData = () => {
   const [data, setData] = useState(null);
 
   const getAPIData = function () {
-    const hourlyEventsPromise = axios.get('/api/events/hourly');
-    const dailyEventsPromise = axios.get('/api/events/daily');
-    const hourlyStatsPromise = axios.get('/api/stats/hourly');
-    const dailyStatsPromise = axios.get('/api/stats/daily');
-    const poiPromise = axios.get('/api/poi');
+    const hourlyEventsPromise = axios.get('/events/hourly');
+    const dailyEventsPromise = axios.get('/events/daily');
+    const hourlyStatsPromise = axios.get('/stats/hourly');
+    const dailyStatsPromise = axios.get('/stats/daily');
+    const poiPromise = axios.get('/poi');
 
     Promise.all([
       hourlyEventsPromise,
