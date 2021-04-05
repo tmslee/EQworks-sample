@@ -49,15 +49,15 @@ export default function MainGraph (props) {
 
     rawEvents.forEach(elem => {
       const timeStamp = getDate_ms(elem);
-      cleanedEvents[timeStamp] = elem.events;
+      cleanedEvents[timeStamp] = Number(elem.events);
 
       maxEvents = Math.max(maxEvents, elem.events);
     });
     rawStats.forEach(elem => {
       const timeStamp = getDate_ms(elem);
-      cleanedClicks[timeStamp] = elem.clicks;
-      cleanedImpressions[timeStamp] = elem.impressions;
-      cleanedRevenue[timeStamp] = elem.revenue;
+      cleanedClicks[timeStamp] = Number(elem.clicks);
+      cleanedImpressions[timeStamp] = Number(elem.impressions);
+      cleanedRevenue[timeStamp] = Number(elem.revenue);
 
       maxClicks = Math.max(maxClicks, elem.clicks);
       maxImpressions = Math.max(maxImpressions, elem.impressions);
