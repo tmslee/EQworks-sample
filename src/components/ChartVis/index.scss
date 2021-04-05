@@ -9,3 +9,37 @@
     height: 75px;
   }
 }
+
+.vis-container {
+  display: flex;
+  flex-direction: column;
+  // align-items: center;
+  .setting-title{
+    margin: 2% 2.5%;
+  }
+  .check-box-options-container{
+    display:flex;
+    .form-group{
+      margin: 0 2.5%;
+    }
+  }
+  .bot-setting-container{
+    display:flex;
+    flex-direction: column;
+    .form-group{
+      margin: 1% 2.5%;
+    }
+    .range-group{
+      display:flex;
+      align-items: center;
+      .slider{
+        align-self: flex-start;
+        margin: 0 1%;
+      }
+    }
+  }
+  // .graph-container{
+  //   align-self:flex-start;
+  //   width:100%;
+  // }
+}

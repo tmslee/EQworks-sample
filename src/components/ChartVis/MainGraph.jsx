@@ -11,6 +11,7 @@ import {
 import { scaleBand } from '@devexpress/dx-chart-core';
 import { ArgumentScale, Stack } from '@devexpress/dx-react-chart';
 import {Plugin} from '@devexpress/dx-react-core';
+import './MainGraph.scss'
 
 export default function MainGraph (props) {
   const {params, data} = props;
@@ -117,7 +118,7 @@ export default function MainGraph (props) {
   }, [params])
 
   return (
-    <Paper>
+    <Paper className="graph">
       <Chart
         data={graphData}
       >

@@ -110,127 +110,133 @@ export default function ChartVis (props) {
       </div>
       
       {data && 
-      <div>
-        <div>
-          <Form>
-            <Form.Group>
-              <Form.Label>Graph Type</Form.Label>
-              <Form.Check
-                type="radio"
-                label="line"
-                name="typeSetting"
-                id="typeSetting1"
-                defaultChecked
-                onClick={() => setParams({...params, type: 'line'})}
-              />
-              <Form.Check
-                type="radio"
-                label="bar"
-                name="typeSetting"
-                id="typeSetting2"
-                onClick={() => setParams({...params, type: 'bar'})}
-              />
-              <Form.Check
-                type="radio"
-                label="scatter"
-                name="typeSetting"
-                id="typeSetting3"
-                onClick={() => setParams({...params, type: 'scatter'})}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Data Displayed</Form.Label>
-              <Form.Check
+      <div className='vis-container'>
+        <h2 className='setting-title'>Graph Settings</h2>
+        <div className='form-container'>
+          <Form className = "form-group-container">
+            <div className = 'check-box-options-container'>
+              <Form.Group className="form-group">
+                <Form.Label>Graph Type</Form.Label>
+                <Form.Check
+                  type="radio"
+                  label="line"
+                  name="typeSetting"
+                  id="typeSetting1"
+                  defaultChecked
+                  onClick={() => setParams({...params, type: 'line'})}
+                />
+                <Form.Check
+                  type="radio"
+                  label="bar"
+                  name="typeSetting"
+                  id="typeSetting2"
+                  onClick={() => setParams({...params, type: 'bar'})}
+                />
+                <Form.Check
+                  type="radio"
+                  label="scatter"
+                  name="typeSetting"
+                  id="typeSetting3"
+                  onClick={() => setParams({...params, type: 'scatter'})}
+                />
+              </Form.Group >
+              <Form.Group className="form-group">
+                <Form.Label>Data Displayed</Form.Label>
+                <Form.Check
+                    type="checkbox"
+                    label="events"
+                    id="inclusionSetting1"
+                    onClick={(e) => {
+                      const updatedInclusion = {...params.includedData};
+                      updatedInclusion.events = e.target.checked;
+                      setParams({...params, includedData: updatedInclusion});
+                    }}
+                />
+                <Form.Check
                   type="checkbox"
-                  label="events"
-                  id="inclusionSetting1"
+                  label="impressions"
+                  id="inclusionSetting2"
                   onClick={(e) => {
                     const updatedInclusion = {...params.includedData};
-                    updatedInclusion.events = e.target.checked;
+                    updatedInclusion.impressions = e.target.checked;
                     setParams({...params, includedData: updatedInclusion});
                   }}
-              />
-              <Form.Check
-                type="checkbox"
-                label="impressions"
-                id="inclusionSetting2"
-                onClick={(e) => {
-                  const updatedInclusion = {...params.includedData};
-                  updatedInclusion.impressions = e.target.checked;
-                  setParams({...params, includedData: updatedInclusion});
-                }}
-              />
-              <Form.Check
-                type="checkbox"
-                label="clicks"
-                id="inclusionSetting3"
-                onClick={(e) => {
-                  const updatedInclusion = {...params.includedData};
-                  updatedInclusion.clicks = e.target.checked;
-                  setParams({...params, includedData: updatedInclusion});
-                }}
-              />
-              <Form.Check
-                type="checkbox"
-                label="revenue"
-                id="inclusionSetting4"
-                onClick={(e) => {
-                  const updatedInclusion = {...params.includedData};
-                  updatedInclusion.revenue = e.target.checked;
-                  setParams({...params, includedData: updatedInclusion});
-                }}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Time Resolution</Form.Label>
-              <Form.Check
-                type="radio"
-                label="daily"
-                name="timeResSetting"
-                id="timeResSetting1"
-                defaultChecked
-                onClick={() => setParams({...params, interval: 'daily'})}
-              />
-              <Form.Check
-                type="radio"
-                label="hourly"
-                name="timeResSetting"
-                id="timeResSetting2"
-                onClick={() => setParams({...params, interval: 'hourly'})}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Graph Time Range</Form.Label>
-              
-              <Slider
-                value={sliderVal}
-                min={params.interval === 'daily' ? minDate_day : minTime_hour}
-                max={params.interval === 'daily' ? maxDate_day : maxTime_hour}
-                onChange={(e, newVal) => {
-                  setSliderVal(newVal);
-                  let [val1, val2] = sliderVal;
-                  val1 = params.interval === 'daily' ? val1*86400000 : val1*3600000;
-                  val2 = params.interval === 'daily' ? val2*86400000 : val2*3600000;
-                  setParams({...params, start: Math.min(val1, val2), end: Math.max(val1, val2)});
-                }}
-                valueLabelDisplay={"auto"}
-                valueLabelFormat={value => formatLabel(value)}
-                style={{width: 300}}
-              />
+                />
+                <Form.Check
+                  type="checkbox"
+                  label="clicks"
+                  id="inclusionSetting3"
+                  onClick={(e) => {
+                    const updatedInclusion = {...params.includedData};
+                    updatedInclusion.clicks = e.target.checked;
+                    setParams({...params, includedData: updatedInclusion});
+                  }}
+                />
+                <Form.Check
+                  type="checkbox"
+                  label="revenue"
+                  id="inclusionSetting4"
+                  onClick={(e) => {
+                    const updatedInclusion = {...params.includedData};
+                    updatedInclusion.revenue = e.target.checked;
+                    setParams({...params, includedData: updatedInclusion});
+                  }}
+                />
+              </Form.Group>
+              <Form.Group className="form-group">
+                <Form.Label>Time Resolution</Form.Label>
+                <Form.Check
+                  type="radio"
+                  label="daily"
+                  name="timeResSetting"
+                  id="timeResSetting1"
+                  defaultChecked
+                  onClick={() => setParams({...params, interval: 'daily'})}
+                />
+                <Form.Check
+                  type="radio"
+                  label="hourly"
+                  name="timeResSetting"
+                  id="timeResSetting2"
+                  onClick={() => setParams({...params, interval: 'hourly'})}
+                />
+              </Form.Group>
+            </div> 
+            
+            <div className="bot-setting-container">
+              <Form.Group className="form-group range-group">
+                <Form.Label>Graph Time Range</Form.Label>
+                
+                <Slider className="slider"
+                  value={sliderVal}
+                  min={params.interval === 'daily' ? minDate_day : minTime_hour}
+                  max={params.interval === 'daily' ? maxDate_day : maxTime_hour}
+                  onChange={(e, newVal) => {
+                    setSliderVal(newVal);
+                    let [val1, val2] = sliderVal;
+                    val1 = params.interval === 'daily' ? val1*86400000 : val1*3600000;
+                    val2 = params.interval === 'daily' ? val2*86400000 : val2*3600000;
+                    setParams({...params, start: Math.min(val1, val2), end: Math.max(val1, val2)});
+                  }}
+                  valueLabelDisplay={"auto"}
+                  valueLabelFormat={value => formatLabel(value)}
+                  style={{width: 300}}
+                />
 
-            </Form.Group>
-            <Form.Group>
-              <Form.Check 
-                type="switch"
-                id="normalization"
-                label="Graph Normalization"
-                onClick={(e) => setParams({...params, normalize: e.target.checked})}
-              />
-            </Form.Group>
+              </Form.Group>
+              <Form.Group className='form-group'>
+                <Form.Check 
+                  type="switch"
+                  id="normalization"
+                  label="Graph Normalization"
+                  onClick={(e) => setParams({...params, normalize: e.target.checked})}
+                />
+              </Form.Group>
+            </div>
           </Form>   
 
         </div>
-        <MainGraph
+        <MainGraph className="graph-container"
           params={params}
           data={data}
         />
