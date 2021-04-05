@@ -32,19 +32,21 @@ export default function Application() {
         <Route
           path="/chart_vis" exact render={props => (
             <ChartVis {...props}
-            data={data}
+              data={data}
             />
           )}
         />
         <Route
           path="/data_table" exact render={props => (
             <DataTable {...props}
+              data={data}
             />
           )}
         />
         <Route
           path="/geo_vis" exact render={props => (
             <GeoVis {...props}
+              data={data}
             />
           )}
         />
