@@ -16,9 +16,9 @@ import useAPIData from "../hooks/useAPIData";
 export default function Application() {
 
   const {data, getAPIData} = useAPIData();
-
-  console.log(data);
   
+  console.log(data);
+
   return (
     <Router>
       <AppNavBar/>

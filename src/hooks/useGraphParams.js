@@ -9,7 +9,6 @@ normalize or not
 */
 const initialParams = {
   type: 'line',
-  data: {},
   includedData: {
     events: false,
     impressions: false,
@@ -24,15 +23,6 @@ const initialParams = {
 
 const useGraphParams = function (data) {
   const [params, setParams] = useState(initialParams);
-
-  useEffect(() => {
-    if(data) {
-      setParams({...initialParams, data});
-      // set data and start day and end day
-    } else {
-      setParams({...initialParams});
-    }
-  }, [data]);
 
   return {
     params,

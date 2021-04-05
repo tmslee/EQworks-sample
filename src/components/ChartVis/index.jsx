@@ -33,6 +33,14 @@ export default function ChartVis (props) {
     poi
   } = data ? data : emptyData;
 
+  const {
+    params,
+    setParams
+  } = useGraphParams();
+
+
+  const [sliderVal, setSliderVal] = useState([0,0]);
+
   let minDate_ms = 0;
   let maxDate_ms = 0;
   let minTime_ms = 0;
@@ -72,13 +80,6 @@ export default function ChartVis (props) {
     // console.log(maxDate_day);
   }
 
-  const {
-    params,
-    setParams
-  } = useGraphParams(data);
-
-  const [sliderVal, setSliderVal] = useState([0,0]);
-
   useEffect(() => {
     if(data) {
       let range = [minDate_day, maxDate_day];
@@ -92,15 +93,15 @@ export default function ChartVis (props) {
       setSliderVal(range);
       setParams({...params, start, end});
     }
-  }, [params.interval]);
+  }, [params.interval, data]);
   
   // useEffect(()=>{
   //   console.log(sliderVal);
   // }, [sliderVal]);
 
-  useEffect(()=> {
-    console.log(params);
-  }, [params])
+  // useEffect(()=> {
+  //   console.log(params);
+  // }, [params])
 
   return (
     <div>
@@ -231,6 +232,7 @@ export default function ChartVis (props) {
         </div>
         <MainGraph
           params={params}
+          data={data}
         />
       </div>
       }
