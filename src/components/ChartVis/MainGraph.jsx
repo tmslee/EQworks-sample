@@ -1,7 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import Paper from '@material-ui/core/Paper';
-import {Chart, ScatterSeries, BarSeries, LineSeries} from '@devexpress/dx-react-chart-material-ui';
-import { isCompositeComponentWithType } from 'react-dom/test-utils';
+import {
+  Chart, 
+  ScatterSeries, 
+  BarSeries, 
+  LineSeries,
+  ArgumentAxis,
+  ValueAxis,
+} from '@devexpress/dx-react-chart-material-ui';
+import { scaleBand } from '@devexpress/dx-chart-core';
+import { ArgumentScale, Stack } from '@devexpress/dx-react-chart';
+import {Plugin} from '@devexpress/dx-react-core';
 
 export default function MainGraph (props) {
   const {params, data} = props;
@@ -96,14 +105,14 @@ export default function MainGraph (props) {
     return graphData;
   }
 
-  let graphData = [];
+  const [graphData, setGraphData] = useState([]);
 
   useEffect(() => {
     if(data){
-      graphData = generateGraphData(cleanData());
-      console.log(graphData);
+      setGraphData(generateGraphData(cleanData()));
+      // console.log(graphData);
     } else {
-      graphData = [];
+      setGraphData([]);
     } 
   }, [params])
 
@@ -112,9 +121,35 @@ export default function MainGraph (props) {
       <Chart
         data={graphData}
       >
-        {
+        <ArgumentScale factory={scaleBand} />
+        <ArgumentAxis />
+        <ValueAxis />
 
-        }
+        <Plugin name="events-chart">
+          {type === 'line' && includedData.events && <LineSeries valueField={'events'} argumentField={'xVal'}/>}
+          {type === 'bar' && includedData.events && <BarSeries valueField={'events'} argumentField={'xVal'}/>}
+          {type === 'scatter' && includedData.events && <ScatterSeries valueField={'events'} argumentField={'xVal'}/>}
+
+        </Plugin>
+
+        <Plugin name="clicks-chart">
+          {type === 'line' && includedData.clicks && <LineSeries valueField={'clicks'} argumentField={'xVal'}/>}
+          {type === 'bar' && includedData.clicks && <BarSeries valueField={'clicks'} argumentField={'xVal'}/>}
+          {type === 'scatter' && includedData.clicks && <ScatterSeries valueField={'clicks'} argumentField={'xVal'}/>}
+
+        </Plugin>
+       
+        <Plugin name="impressions-chart">
+          {type === 'line' && includedData.impressions && <LineSeries valueField={'impressions'} argumentField={'xVal'}/>}
+          {type === 'bar' && includedData.impressions && <BarSeries valueField={'impressions'} argumentField={'xVal'}/>}
+          {type === 'scatter' && includedData.impressions && <ScatterSeries valueField={'impressions'} argumentField={'xVal'}/>}
+        </Plugin>
+
+        <Plugin name="revenue-chart">
+          {type === 'line' && includedData.revenue && <LineSeries valueField={'revenue'} argumentField={'xVal'}/>}
+          {type === 'scatter' && includedData.revenue && <ScatterSeries valueField={'revenue'} argumentField={'xVal'}/>}
+          {type === 'bar' && includedData.revenue && <BarSeries valueField={'revenue'} argumentField={'xVal'}/>}
+        </Plugin>
       </Chart>
     </Paper>
   );
