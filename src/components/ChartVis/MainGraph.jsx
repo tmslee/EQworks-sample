@@ -151,35 +151,28 @@ export default function MainGraph (props) {
           labelComponent={ArgumentLabel}
         />
         <ValueAxis />
-          <Plugin name="events-chart">
-            {type === 'line' && includedData.events && <LineSeries name={'events'} valueField={'events'} argumentField={'xVal'}/>}
-            {type === 'bar' && includedData.events && <BarSeries name={'events'} valueField={'events'} argumentField={'xVal'}/>}
-            {type === 'scatter' && includedData.events && <ScatterSeries name={'events'} valueField={'events'} argumentField={'xVal'}/>}
-          </Plugin>
 
-          <Plugin name="clicks-chart">
-            {type === 'line' && includedData.clicks && <LineSeries name={'clicks'} valueField={'clicks'} argumentField={'xVal'}/>}
-            {type === 'bar' && includedData.clicks && <BarSeries name={'clicks'} valueField={'clicks'} argumentField={'xVal'}/>}
-            {type === 'scatter' && includedData.clicks && <ScatterSeries name={'clicks'} valueField={'clicks'} argumentField={'xVal'}/>}
-          </Plugin>
-          
-          <Plugin name="impressions-chart">
-            {type === 'line' && includedData.impressions && <LineSeries name={'impressions'} valueField={'impressions'} argumentField={'xVal'}/>}
-            {type === 'bar' && includedData.impressions && <BarSeries name={'impressions'} valueField={'impressions'} argumentField={'xVal'}/>}
-            {type === 'scatter' && includedData.impressions && <ScatterSeries name={'impressions'} valueField={'impressions'} argumentField={'xVal'}/>}
-          </Plugin>
+        <Plugin name="events-chart">
+          {type === 'line' && includedData.events && <LineSeries name={'events'} valueField={'events'} argumentField={'xVal'}/>}
+          {type === 'bar' && includedData.events && <BarSeries name={'events'} valueField={'events'} argumentField={'xVal'}/>}
+          {type === 'scatter' && includedData.events && <ScatterSeries name={'events'} valueField={'events'} argumentField={'xVal'}/>}
 
-          <Plugin name="revenue-chart">
-            {type === 'line' && includedData.revenue && <LineSeries name={'revenue'} valueField={'revenue'} argumentField={'xVal'}/>}
-            {type === 'scatter' && includedData.revenue && <ScatterSeries name={'revenue'} valueField={'revenue'} argumentField={'xVal'}/>}
-            {type === 'bar' && includedData.revenue && <BarSeries name={'revenue'} valueField={'revenue'} argumentField={'xVal'}/>}
-          </Plugin>
-          
-          {/* <Plugin name="chart-elem"> */}
-            {type === 'bar' && <Stack/>}
-            <Legend/>
-            <ZoomAndPan/>
-          {/* </Plugin> */}
+          {type === 'line' && includedData.clicks && <LineSeries name={'clicks'} valueField={'clicks'} argumentField={'xVal'}/>}
+          {type === 'bar' && includedData.clicks && <BarSeries name={'clicks'} valueField={'clicks'} argumentField={'xVal'}/>}
+          {type === 'scatter' && includedData.clicks && <ScatterSeries name={'clicks'} valueField={'clicks'} argumentField={'xVal'}/>}
+
+          {type === 'line' && includedData.impressions && <LineSeries name={'impressions'} valueField={'impressions'} argumentField={'xVal'}/>}
+          {type === 'bar' && includedData.impressions && <BarSeries name={'impressions'} valueField={'impressions'} argumentField={'xVal'}/>}
+          {type === 'scatter' && includedData.impressions && <ScatterSeries name={'impressions'} valueField={'impressions'} argumentField={'xVal'}/>}
+
+          {type === 'line' && includedData.revenue && <LineSeries name={'revenue'} valueField={'revenue'} argumentField={'xVal'}/>}
+          {type === 'scatter' && includedData.revenue && <ScatterSeries name={'revenue'} valueField={'revenue'} argumentField={'xVal'}/>}
+          {type === 'bar' && includedData.revenue && <BarSeries name={'revenue'} valueField={'revenue'} argumentField={'xVal'}/>}
+
+        </Plugin>
+
+          {type === 'bar' && <Stack/>}
+          <Legend/>
       </Chart>
     </Paper>
   );
