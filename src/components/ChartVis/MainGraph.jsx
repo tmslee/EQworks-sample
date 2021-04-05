@@ -8,6 +8,7 @@ import {
   LineSeries,
   ArgumentAxis,
   ValueAxis,
+  ZoomAndPan
 } from '@devexpress/dx-react-chart-material-ui';
 import { scaleBand } from '@devexpress/dx-chart-core';
 import { ArgumentScale, Stack } from '@devexpress/dx-react-chart';
@@ -179,6 +180,7 @@ export default function MainGraph (props) {
         
         {type === 'bar' && <Stack/>}
         <Legend/>
+        <ZoomAndPan/>
       </Chart>
     </Paper>
   );
