@@ -236,10 +236,12 @@ export default function ChartVis (props) {
           </Form>   
 
         </div>
-        <MainGraph className="graph-container"
-          params={params}
-          data={data}
-        />
+        <div className="graph-container">
+          <MainGraph 
+            params={params}
+            data={data}
+          />
+        </div>
       </div>
       }
 
