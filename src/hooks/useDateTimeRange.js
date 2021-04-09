@@ -14,19 +14,19 @@ const initMinMaxRange = {
 }
 
 const useDateTimeRange = function (interval, data) {
-  const {
-    hourlyEvents,
-    dailyEvents,
-    hourlyStats,
-    dailyStats,
-    poi
-  } = data;
-
   const [sliderVal, setSliderVal] = useState([0,0]);
   const [minMaxRange, setMinMaxRange] = useState(initMinMaxRange);
 
   useEffect(() => {
     if(data) {
+      const {
+        hourlyEvents,
+        dailyEvents,
+        hourlyStats,
+        dailyStats,
+        poi
+      } = data;
+
       const minDate_ms = Math.min(new Date(dailyStats[0].date), new Date(dailyEvents[0].date));
       const maxDate_ms = Math.max(new Date(dailyStats[dailyStats.length-1].date), new Date(dailyEvents[dailyEvents.length-1].date));
       

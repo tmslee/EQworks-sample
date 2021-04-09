@@ -16,24 +16,9 @@ import useDateTimeRange from '../../hooks/useDateTimeRange';
 // end: null,
 // normalize: false
 
-const emptyData = {
-  hourlyEvents: [],
-  dailyEvents: [],
-  hourlyStats: [],
-  dailyStats: [],
-  poi: []
-}
-
 export default function ChartVis (props) {
   const {data} = props;
-  const {
-    hourlyEvents,
-    dailyEvents,
-    hourlyStats,
-    dailyStats,
-    poi
-  } = data ? data : emptyData;
-
+  
   const {
     params,
     setParams
@@ -179,6 +164,8 @@ export default function ChartVis (props) {
                     val1 = params.interval === 'daily' ? val1*86400000 : val1*3600000;
                     val2 = params.interval === 'daily' ? val2*86400000 : val2*3600000;
                     setParams({...params, start: Math.min(val1, val2), end: Math.max(val1, val2)});
+
+                    console.log(val1)
                   }}
                   valueLabelDisplay={"auto"}
                   valueLabelFormat={value => formatLabel(value)}

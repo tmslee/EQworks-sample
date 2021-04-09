@@ -15,11 +15,11 @@ const defaultQuery = {
 };
 
 const useTableQuery = function (){
-  const [searchQuery, setSearchQuery] = useState(defaultQuery);
+  const [filterQuery, setFilterQuery] = useState(defaultQuery);
   const [queryRes, setQueryRes] = useState([]);
 
   const resetQuery = function(){
-    setSearchQuery(defaultQuery);
+    setFilterQuery(defaultQuery);
   }
 
   const setDateRange = function(dateRange){
@@ -33,16 +33,16 @@ const useTableQuery = function (){
   const setIncludedData = function(dataName, include){
     switch(dataName){
       case 'events':
-        setSearchQuery({...searchQuery, events:include});
+        setFilterQuery({...filterQuery, events:include});
         break;
       case 'clicks':
-        setSearchQuery({...searchQuery, clicks:include});
+        setFilterQuery({...filterQuery, clicks:include});
         break;
       case 'revenue':
-        setSearchQuery({...searchQuery, revenue:include});
+        setFilterQuery({...filterQuery, revenue:include});
         break;
       case 'impressions':        
-        setSearchQuery({...searchQuery, impressions:include});
+      setFilterQuery({...filterQuery, impressions:include});
         break;
       default:
         return;
@@ -51,7 +51,7 @@ const useTableQuery = function (){
   }
 
   const setSearchTerm = function(term){
-    setSearchQuery({...searchQuery, searchTerm: term});
+    setFilterQuery({...filterQuery, searchTerm: term});
   }
   
   useEffect(()=> {
@@ -59,17 +59,17 @@ const useTableQuery = function (){
   }, [])
 
   useEffect(() => {
-    axios.get(`/tableData/${searchQuery.interval}`, {params:searchQuery})
+    axios.get(`/tableData/${filterQuery.interval}`, {params:filterQuery})
     .then(res => {
       setQueryRes(res.data);
     }).catch(e => {
       setQueryRes([]);
       console.log(e);
     });
-  }, [searchQuery]);
+  }, [filterQuery]);
 
   return {
-    searchQuery,
+    filterQuery,
     setDateRange,
     setHourRange,
     setIncludedData,
