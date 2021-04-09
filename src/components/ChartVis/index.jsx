@@ -6,6 +6,7 @@ import useGraphParams from '../../hooks/useGraphParams';
 import MainGraph from './MainGraph';
 import Slider from '@material-ui/core/Slider';
 import './index.scss';
+import useDateTimeRange from '../../hooks/useDateTimeRange';
 
 // type: 'line',
 // data: {},
@@ -38,17 +39,7 @@ export default function ChartVis (props) {
     setParams
   } = useGraphParams();
 
-
-  const [sliderVal, setSliderVal] = useState([0,0]);
-
-  let minDate_ms = 0;
-  let maxDate_ms = 0;
-  let minTime_ms = 0;
-  let maxTime_ms = 0;
-  let minDate_day = 0;
-  let maxDate_day = 0;
-  let minTime_hour = 0;
-  let maxTime_hour = 0;
+  const {sliderVal, setSliderVal, minMaxRange} = useDateTimeRange(params.interval, data);
 
   const formatLabel = function(value){
     let options = null;
@@ -62,46 +53,17 @@ export default function ChartVis (props) {
     return new Date(value).toLocaleDateString([], options);
   }
 
-  if(data) {
-    minDate_ms = Math.min(new Date(dailyStats[0].date), new Date(dailyEvents[0].date));
-    maxDate_ms = Math.max(new Date(dailyStats[dailyStats.length-1].date), new Date(dailyEvents[dailyEvents.length-1].date));
-    
-    const minHour = Math.min(hourlyStats[0].hour, hourlyEvents[0].hour);
-    const maxHour = Math.max(hourlyStats[hourlyStats.length-1].hour, hourlyEvents[hourlyEvents.length-1].hour);
-    minTime_ms = minDate_ms + minHour*3600000;
-    maxTime_ms = maxDate_ms + maxHour*3600000;
-
-    minDate_day = minDate_ms/86400000;
-    maxDate_day = maxDate_ms/86400000;
-    minTime_hour = minTime_ms/3600000;
-    maxTime_hour = maxTime_ms/3600000;
-
-    // console.log(minDate_day);
-    // console.log(maxDate_day);
-  }
-
   useEffect(() => {
     if(data) {
-      let range = [minDate_day, maxDate_day];
-      let start = minDate_ms;
-      let end = maxDate_ms;
+      let start = minMaxRange.minDate_ms;
+      let end = minMaxRange.maxDate_ms;
       if (params.interval !== 'daily') {
-        range = [minTime_hour, maxTime_hour];
-        start = minTime_ms;
-        end = maxTime_ms;
+        start = minMaxRange.minTime_ms;
+        end = minMaxRange.maxTime_ms;
       }
-      setSliderVal(range);
       setParams({...params, start, end});
     }
-  }, [params.interval, data]);
-  
-  // useEffect(()=>{
-  //   console.log(sliderVal);
-  // }, [sliderVal]);
-
-  // useEffect(()=> {
-  //   console.log(params);
-  // }, [params])
+  }, [sliderVal])
 
   return (
     <div>
@@ -209,8 +171,8 @@ export default function ChartVis (props) {
                 
                 <Slider className="slider"
                   value={sliderVal}
-                  min={params.interval === 'daily' ? minDate_day : minTime_hour}
-                  max={params.interval === 'daily' ? maxDate_day : maxTime_hour}
+                  min={params.interval === 'daily' ? minMaxRange.minDate_day : minMaxRange.minTime_hour}
+                  max={params.interval === 'daily' ? minMaxRange.maxDate_day : minMaxRange.maxTime_hour}
                   onChange={(e, newVal) => {
                     setSliderVal(newVal);
                     let [val1, val2] = sliderVal;
