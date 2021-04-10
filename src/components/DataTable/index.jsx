@@ -1,23 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {Form } from 'react-bootstrap';
 import Slider from '@material-ui/core/Slider';
 
-import axios from 'axios';
 import useTableQuery from '../../hooks/useTableQuery'
 import useDateTimeRange from '../../hooks/useDateTimeRange';
 
-import DataTableComponent from './Table';
+import DataTableComponent from './DataTableComponent';
+
+import './index.scss';
 
 export default function DataTable (props) {
   const {data} = props;
-
-  const{
+  
+  const {
     filterQuery,
     setInterval,
     setDateTimeRange,
     setIncludedData,
     setSearchTerm,
-    queryRes
+    setSortOptions,
+    queryRes,
+    setQueryRes
   } = useTableQuery();
 
   const {
@@ -27,18 +30,49 @@ export default function DataTable (props) {
     formatLabel
   } = useDateTimeRange(filterQuery.interval, data);
 
-  // axios.get('/all/daily', {params:{butt:123}}).then(res =>{
-  //   console.log("hi");
-  // });
-
   useEffect(()=> {
-    setDateTimeRange(sliderVal, filterQuery.interval);
+    if(sliderVal[0] !== 0 && sliderVal[1] !== 0){
+      setDateTimeRange(sliderVal, filterQuery.interval);
+    }
   }, [sliderVal]);
 
-  // useEffect(()=> {
-  //   console.log(filterQuery);
-  //   console.log(queryRes);
-  // }, [queryRes]);
+  useEffect(() => {
+    console.log(filterQuery);
+
+    if(!getPossibleSortBy(filterQuery).includes(filterQuery.sortBy)) {
+      setSortOptions("date", false);
+    }
+
+  }, [filterQuery]);
+
+  const getPossibleSortBy = function (filterQuery) {
+    const sortByList = [];
+    sortByList.push("date");
+
+    if (filterQuery.interval === "hourly"){
+      sortByList.push("hour");
+      if(filterQuery.events) sortByList.push("events_poi");
+      if(filterQuery.clicks || filterQuery.impressions || filterQuery.revenue) sortByList.push("stats_poi");
+    }
+
+    if (filterQuery.events) sortByList.push("events");
+    if (filterQuery.clicks) sortByList.push("clicks");
+    if (filterQuery.impressions) sortByList.push("impressions");
+    if (filterQuery.revenue) sortByList.push("revenue");
+
+    return sortByList;
+  }
+
+  const parsedSortOptions = function (filterQuery){
+    const sortByList = getPossibleSortBy(filterQuery);
+    const options = sortByList.map((option, idx) => {
+      let displayText = option;
+      if(option === "events_poi") displayText = "events location";
+      else if(option === "stats_poi") displayText = "stats location";
+      return <option key={idx} value={option}>{displayText}</option>;
+    });
+    return options;
+  };
 
   return (
     <div>
@@ -46,9 +80,9 @@ export default function DataTable (props) {
       {data &&
       <>
         <div className="filter-container">
-          <h4>Data Table Filter</h4>
-          <div className="form-container">
-            <Form>
+          <h4 className="filter-title">Data Table Filter</h4>
+          <div >
+            <Form className="form-container">
             <Form.Group className="form-group">
                 <Form.Label>Time Resolution</Form.Label>
                 <Form.Check
@@ -56,7 +90,6 @@ export default function DataTable (props) {
                   label="daily"
                   name="timeResSetting"
                   id="timeResSetting1"
-                  defaultChecked
                   onClick={() => {
                     setSearchTerm("");
                     setInterval('daily');
@@ -67,6 +100,7 @@ export default function DataTable (props) {
                   label="hourly"
                   name="timeResSetting"
                   id="timeResSetting2"
+                  defaultChecked
                   onClick={() => {
                     setInterval('hourly');
                   }}
@@ -107,7 +141,7 @@ export default function DataTable (props) {
                 />
               </Form.Group>
               <Form.Group className="form-group range-group">
-                <Form.Label>Graph Time Range</Form.Label>
+                <Form.Label className="slider-title">Graph Time Range</Form.Label>
                 
                 <Slider className="slider"
                   value={sliderVal}
@@ -121,7 +155,7 @@ export default function DataTable (props) {
               </Form.Group>
               {filterQuery.interval === 'hourly' && 
                 <Form.Group>
-                  <Form.Label>Search by POI Name</Form.Label>
+                  <Form.Label>Search by Location Name</Form.Label>
                   <Form.Control 
                     type="text" 
                     placeholder="enter search term"
@@ -133,9 +167,39 @@ export default function DataTable (props) {
           </div>
         </div>
               
-        <div className="table-contrainer">
-          <h4>Data Table</h4>
+        <div className="table-container">
+          <div className="table-header">
+              <h4 className = "table-title">Data Table</h4>
+                <Form className="sort-options-container">
+                  <Form.Control
+                    as="select"
+                    className="sort-option sort-by"
+                    id="sort-sort-by"
+                    value={filterQuery.sortBy}
+                    onChange ={(e) => {
+                      setSortOptions(e.target.value, filterQuery.descending);
+                    }}
+                    custom
+                  >
+                    {parsedSortOptions(filterQuery)}
+                  </Form.Control>
+                  <Form.Control
+                    as="select"
+                    className="sort-option asc-desc"
+                    id="sort-asc-desc"
+                    value={filterQuery.descending}
+                    onChange ={(e) => {
+                      setSortOptions(filterQuery.sortBy, e.target.value);
+                    }}
+                    custom
+                  >
+                    <option value={false}>ascending</option>
+                    <option value={true}>descending</option>
+                  </Form.Control>
+                </Form>
+          </div>
           <DataTableComponent
+            className="table"
             queryRes={queryRes}
           />
         </div>

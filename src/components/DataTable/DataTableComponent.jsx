@@ -1,11 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import {Table} from 'react-bootstrap';
 
+import './DataTableComponent.scss';
+
 export default function DataTableComponent (props) {
   const {queryRes} = props;
 
   const [tableData, setTableData] = useState(queryRes);
 
+
+  // const sortQueryRes = function(sortBy, ascend) {
+  //   setTableData(tableData.sort((data1, data2) => {
+  //     if(sortBy === 'date'){
+
+  //     }
+  //   }))
+  // }
+  
   useEffect(()=> {
     setTableData(queryRes);
   }, [queryRes])
@@ -104,6 +115,7 @@ export default function DataTableComponent (props) {
 
   return (
     <>
+      {tableData.length == 0 && <p>fetching data...</p>}
       {tableData.length > 0 &&
         <Table striped bordered hover size="sm">
           <thead>

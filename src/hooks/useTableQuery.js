@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react';
 import axios from 'axios';
 
 const defaultQuery = {
-  interval: 'daily',
+  interval: 'hourly',
   minDate: null,
   minHour: 0,
   maxDate: null,
@@ -11,7 +11,9 @@ const defaultQuery = {
   clicks: true,
   impressions: true,
   revenue: true,
-  searchTerm: ""
+  searchTerm: "",
+  sortBy: "date",
+  descending: false
 };
 
 const useTableQuery = function (){
@@ -33,10 +35,6 @@ const useTableQuery = function (){
       time: Number(dateString.substring(dateString.length-2, dateString.length))
     }
     return dateTime;
-  }
-
-  const resetQuery = function(){
-    setFilterQuery(defaultQuery);
   }
 
   const setInterval = function(interval){
@@ -92,10 +90,18 @@ const useTableQuery = function (){
   const setSearchTerm = function(term){
     setFilterQuery({...filterQuery, searchTerm: term});
   }
+
+  const setSortBy = function (sortBy) {
+    setFilterQuery({...filterQuery, sortBy});
+  }
   
-  useEffect(()=> {
-    resetQuery();
-  }, []);
+  const setDescending = function (descending) {
+    setFilterQuery({...filterQuery, descending});
+  }
+
+  const setSortOptions = function (sortBy, descending){
+    setFilterQuery({...filterQuery, sortBy, descending});
+  }
 
   useEffect(() => {
     axios.get(`/tableData/${filterQuery.interval}`, {params:filterQuery})
@@ -107,13 +113,19 @@ const useTableQuery = function (){
     });
   }, [filterQuery]);
 
+
+
   return {
     filterQuery,
     setInterval,
     setDateTimeRange,
     setIncludedData,
     setSearchTerm,
-    queryRes
+    setSortBy,
+    setDescending,
+    setSortOptions,
+    queryRes,
+    setQueryRes
   };
 }
 
