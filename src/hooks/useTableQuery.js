@@ -4,9 +4,9 @@ import axios from 'axios';
 const defaultQuery = {
   interval: 'daily',
   minDate: null,
-  minHour: null,
+  minHour: 0,
   maxDate: null,
-  maxHour: null,
+  maxHour: 0,
   events: true,
   clicks: true,
   impressions: true,
@@ -18,16 +18,55 @@ const useTableQuery = function (){
   const [filterQuery, setFilterQuery] = useState(defaultQuery);
   const [queryRes, setQueryRes] = useState([]);
 
+  const msToDateTime = function (timeStamp_ms){
+    const options = {
+      year:"numeric",
+      month:"2-digit",
+      day:"2-digit",
+      hour:"2-digit",
+      timeZone: "UTC"
+    };
+    const dateString = new Date(timeStamp_ms).toLocaleDateString([], options);
+    const [day, month, year] = dateString.substring(0,10).split("/");
+    const dateTime = {
+      date: `${year}-${month}-${day}T00:00:00.000Z`,
+      time: Number(dateString.substring(dateString.length-2, dateString.length))
+    }
+    return dateTime;
+  }
+
   const resetQuery = function(){
     setFilterQuery(defaultQuery);
   }
 
-  const setDateRange = function(dateRange){
-
+  const setInterval = function(interval){
+    setFilterQuery({...filterQuery, interval});
   }
 
-  const setHourRange = function(hourRange){
+  const setDateTimeRange = function(range, interval){
+    // console.log("range: ", range);
 
+    let [minRange, maxRange] = range;
+    const multiplier = interval === 'daily' ? 86400000 : 3600000;
+    minRange *= multiplier;
+    maxRange *= multiplier;
+
+    // console.log(minRange);
+    // console.log(maxRange);
+
+    const minDateTime = msToDateTime(minRange);
+    const maxDateTime = msToDateTime(maxRange);
+
+    // console.log("minDateTime: ", minDateTime);
+    // console.log("maxDateTime: ", maxDateTime);
+
+    setFilterQuery({
+      ...filterQuery, 
+      minDate: minDateTime.date,
+      minHour: minDateTime.time,
+      maxDate: maxDateTime.date,
+      maxHour: maxDateTime.time
+    })
   }
 
   const setIncludedData = function(dataName, include){
@@ -56,7 +95,7 @@ const useTableQuery = function (){
   
   useEffect(()=> {
     resetQuery();
-  }, [])
+  }, []);
 
   useEffect(() => {
     axios.get(`/tableData/${filterQuery.interval}`, {params:filterQuery})
@@ -70,8 +109,8 @@ const useTableQuery = function (){
 
   return {
     filterQuery,
-    setDateRange,
-    setHourRange,
+    setInterval,
+    setDateTimeRange,
     setIncludedData,
     setSearchTerm,
     queryRes

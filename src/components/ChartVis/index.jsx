@@ -24,19 +24,7 @@ export default function ChartVis (props) {
     setParams
   } = useGraphParams();
 
-  const {sliderVal, setSliderVal, minMaxRange} = useDateTimeRange(params.interval, data);
-
-  const formatLabel = function(value){
-    let options = null;
-    if (params.interval === 'daily'){
-      options = {year: 'numeric', month: 'long', day: 'numeric'};
-      value *= 86400000;
-    } else {
-      options = {year: 'numeric', month: 'long', day: 'numeric', hour:'numeric'};
-      value *= 3600000
-    }
-    return new Date(value).toLocaleDateString([], options);
-  }
+  const {sliderVal, setSliderVal, minMaxRange, formatLabel} = useDateTimeRange(params.interval, data);
 
   useEffect(() => {
     if(data) {
@@ -164,11 +152,9 @@ export default function ChartVis (props) {
                     val1 = params.interval === 'daily' ? val1*86400000 : val1*3600000;
                     val2 = params.interval === 'daily' ? val2*86400000 : val2*3600000;
                     setParams({...params, start: Math.min(val1, val2), end: Math.max(val1, val2)});
-
-                    console.log(val1)
                   }}
                   valueLabelDisplay={"auto"}
-                  valueLabelFormat={value => formatLabel(value)}
+                  valueLabelFormat={value => formatLabel(value, params.interval)}
                   style={{width: 300}}
                 />
 

@@ -17,6 +17,18 @@ const useDateTimeRange = function (interval, data) {
   const [sliderVal, setSliderVal] = useState([0,0]);
   const [minMaxRange, setMinMaxRange] = useState(initMinMaxRange);
 
+  const formatLabel = function(value, interval){
+    let options = null;
+    if (interval === 'daily'){
+      options = {year: 'numeric', month: 'long', day: 'numeric', timeZone:"UTC"};
+      value *= 86400000;
+    } else {
+      options = {year: 'numeric', month: 'long', day: 'numeric', hour:'numeric', timeZone:"UTC"};
+      value *= 3600000
+    }
+    return new Date(value).toLocaleDateString([], options);
+  }
+
   useEffect(() => {
     if(data) {
       const {
@@ -66,7 +78,8 @@ const useDateTimeRange = function (interval, data) {
   return{
     sliderVal,
     setSliderVal,
-    minMaxRange
+    minMaxRange,
+    formatLabel
   };
 }
 
