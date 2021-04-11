@@ -3,7 +3,7 @@ import React from 'react';
 import {useState, useEffect} from 'react';
 import {Form} from 'react-bootstrap';
 import useGeoData from '../../hooks/useGeoData';
-
+import Map from './Map';
 import './index.scss'
 
 export default function GeoVis (props) {
@@ -70,14 +70,6 @@ export default function GeoVis (props) {
     return parsedResult
   }
 
-  const parseData = function(displayData) {
-    if(displayData === 'events'){
-      // currData.events.map()
-    } else {
-      //currData.stats.map()
-    }
-  }
-
   return (
     <div className="main-container">
       <div className="form-container">
@@ -133,8 +125,11 @@ export default function GeoVis (props) {
           </Form.Group>
         </Form>
       </div>
-      <div className="map-container">
-
+      <div className="map-container" id="mapid">
+        <Map
+          displayData={displayData}
+          data={currData}
+        />
       </div>
     </div>
   );
