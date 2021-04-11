@@ -91,14 +91,6 @@ const useTableQuery = function (){
     setFilterQuery({...filterQuery, searchTerm: term});
   }
 
-  const setSortBy = function (sortBy) {
-    setFilterQuery({...filterQuery, sortBy});
-  }
-  
-  const setDescending = function (descending) {
-    setFilterQuery({...filterQuery, descending});
-  }
-
   const setSortOptions = function (sortBy, descending){
     setFilterQuery({...filterQuery, sortBy, descending});
   }
@@ -121,8 +113,6 @@ const useTableQuery = function (){
     setDateTimeRange,
     setIncludedData,
     setSearchTerm,
-    setSortBy,
-    setDescending,
     setSortOptions,
     queryRes,
     setQueryRes

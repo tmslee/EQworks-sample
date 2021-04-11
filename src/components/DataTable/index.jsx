@@ -37,8 +37,6 @@ export default function DataTable (props) {
   }, [sliderVal]);
 
   useEffect(() => {
-    console.log(filterQuery);
-
     if(!getPossibleSortBy(filterQuery).includes(filterQuery.sortBy)) {
       setSortOptions("date", false);
     }
@@ -83,7 +81,7 @@ export default function DataTable (props) {
           <h4 className="filter-title">Data Table Filter</h4>
           <div >
             <Form className="form-container">
-            <Form.Group className="form-group">
+              <Form.Group className="form-group">
                 <Form.Label>Time Resolution</Form.Label>
                 <Form.Check
                   type="radio"
