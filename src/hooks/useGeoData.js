@@ -24,7 +24,7 @@ const useGeoData = function (){
   }, []);
 
   useEffect(() => {
-    console.log(geoData);
+    // console.log(geoData);
     if(geoData){
       const{
         eventsDay,

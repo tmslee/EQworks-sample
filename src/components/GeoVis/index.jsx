@@ -36,9 +36,9 @@ export default function GeoVis (props) {
     }
   }, [geoData, currDay]);
 
-  useEffect(()=>{
-    console.log(currData);
-  }, [currData]);
+  // useEffect(()=>{
+  //   console.log(currData);
+  // }, [currData]);
   
   const msToDayString = function (timeStamp_ms){
     const options = {

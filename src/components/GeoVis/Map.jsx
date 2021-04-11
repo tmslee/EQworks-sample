@@ -8,29 +8,36 @@ import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import iconRetina from "leaflet/dist/images/marker-icon-2x.png";
 
+import level1 from '../../Static/level1.png';
+import level2 from '../../Static/level2.png';
+import level3 from '../../Static/level3.png';
+import level4 from '../../Static/level4.png';
+
 import './Map.scss'
 
 export default function Map (props) {
   const {displayData, data} = props;
 
-  let DefaultIcon = Leaflet.icon({
-    ...Leaflet.Icon.Default.prototype.options,
-    iconUrl: icon,
-    iconRetinaUrl: iconRetina,
-    shadowUrl: iconShadow
-  });
-  Leaflet.Marker.prototype.options.icon = DefaultIcon;
+  console.log(Leaflet.Marker.prototype.options);
 
-  const SetCenter = function (props) {
-    const {center} = props;
-    const map = useMap();
-    map.setView(center, map.getZoom());
-    return null;
-  }
+  // let DefaultIcon = Leaflet.icon({
+  //   ...Leaflet.Icon.Default.prototype.options,
+  //   iconUrl: icon,
+  //   iconRetinaUrl: iconRetina,
+  //   shadowUrl: iconShadow
+  // });
+  // Leaflet.Marker.prototype.options.icon = DefaultIcon;
+
+  // const SetCenter = function (props) {
+  //   const {center} = props;
+  //   const map = useMap();
+  //   map.setView(center, map.getZoom());
+  //   return null;
+  // }
 
   const SetBounds = function(props) {
     const {bounds} = props;
-    console.log(bounds);
+    // console.log(bounds);
     const map = useMap();
     map.fitBounds(bounds);
     return null;
@@ -83,19 +90,43 @@ export default function Map (props) {
     return bounds;
   }
 
+  const GetIcon = function (relativePercentile){
+    let iconImg = level4;
+    if(relativePercentile <= .75) iconImg = level3;
+    else if(relativePercentile <= .5) iconImg = level2;
+    else if(relativePercentile <= .25) iconImg = level1;
+
+    return Leaflet.icon({
+      ...Leaflet.Icon.Default.prototype.options,
+
+      iconUrl: iconImg,
+      iconSize: [40,40],
+      // iconRetinaUrl: iconRetina,
+      shadowUrl: iconShadow
+    });
+  }
+
   const parseMarkers = function (data) {
     if(data){
       let markerData;
+      
       if (displayData === "events"){
         markerData = data.events;
       } else {
         markerData = data.stats;
       }
+
+      let maxVal = 0;
+      markerData.forEach((data)=> {
+        maxVal = Math.max(data[displayData], maxVal);
+      });
+
       return markerData.map((data, idx) => {
         return(
           <Marker
             key={idx}
             position={[data.lat, data.lon]}
+            icon={GetIcon(data[displayData]/maxVal)}
           >
             <Popup>
               {`${data.name}`}<br/>
@@ -108,7 +139,6 @@ export default function Map (props) {
     return <></>;
   }
   const createClusterCustomIcon = function (cluster) {
-    console.log(cluster.getChildCount());
     return L.divIcon({
       html: `<span>${cluster.getChildCount()}</span>`,
       className: 'marker-cluster-custom',
