@@ -30,7 +30,7 @@ export default function AppNavBar (props) {
           <Nav.Link 
             onClick={() => handleNavClick("/geo_vis")}
             >
-            geo visualizaions
+            geo visualization
           </Nav.Link>
         </Nav>
       </Navbar.Collapse>

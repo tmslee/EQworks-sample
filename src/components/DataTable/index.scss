@@ -1,0 +1,67 @@
+.MuiSlider-valueLabel.PrivateValueLabel-offset-3{
+  left: calc(-50% - 25px);
+
+  top: -75px;
+  text-align: center;
+
+  .PrivateValueLabel-circle-4{
+    width: 75px;
+    height: 75px;
+  }
+}
+
+.filter-container{
+  display:flex;
+  flex-direction:column;
+  .filter-title{
+    margin: 1% 2.5%;
+  }
+  .form-container{
+    display:flex;
+
+    .form-group{
+      margin: 1% 2.5%;
+    }
+    .range-group{
+      display:flex;
+      flex-direction: column;
+      align-items: center;
+      .slider-title{
+        align-self: flex-start;
+      }
+      .slider{
+        align-self: flex-start;
+        margin: 0 1%;
+      }
+    }
+  }
+}
+
+.table-container{
+  display:flex;
+  flex-direction: column;
+  .table-header{
+    margin: 0 2%;
+    width: 90%;
+    display:flex;
+    justify-content:space-between;
+    .table-title{
+      margin: 2% 0%;
+    }
+    .sort-options-container{
+      display:flex;
+      width: 40%;
+      justify-content: space-around;
+      align-items: center;
+      .sort-option{
+        width: 100%;
+        margin: 0 2%;
+      }
+    }
+  }
+  
+  .table{
+    width: 90%;
+    margin: 0 2%;
+  }
+}
